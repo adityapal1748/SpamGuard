@@ -1,0 +1,18 @@
+{
+  "development": {
+    "username": "root",
+    "password": "1234",
+    "database": "spam",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "JWT_SECRET":"spam"
+  },
+  "production": {
+    "username": "root",
+    "password": "1234",
+    "database": "spam_prod",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "JWT_SECRET": "spam_prod"
+  }
+}
