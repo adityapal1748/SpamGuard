@@ -1,14 +1,26 @@
+const Joi = require('joi');
 const Contact = require("../models/contact");
 const User = require("../models/user");
 const successResponse = require('../services/httpResponseHandler');
 const errorResponse = require('../services/httpErrorHandler');
 
+// Define Joi schema for the request body
+const schema = Joi.object({
+    person: Joi.number().required()
+});
+
 const getContactDetails = async (req, res) => {
-    const contactId = req.body.person; // ID of the contact being searched for
-    const searchingUserPhoneNumber = req.user.phoneNumber; // Phone number from the authenticated user
-    
     try {
-        const contact = await Contact.findByPk(contactId); // Fetch the contact by ID
+        // Validate request body
+        const { error, value } = schema.validate(req.body);
+        if (error) {
+            throw new Error(error.details[0].message);
+        }
+
+        const { person } = value; // ID of the contact being searched for
+        const searchingUserPhoneNumber = req.user.phoneNumber; // Phone number from the authenticated user
+
+        const contact = await Contact.findByPk(person); // Fetch the contact by ID
 
         if (!contact) {
             return errorResponse(res, new Error('Contact not found'), 404);

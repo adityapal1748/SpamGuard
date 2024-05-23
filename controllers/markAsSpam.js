@@ -10,7 +10,6 @@ const markAsSpam = async (req, res) => {
         if (!contact) {
             return errorResponse(res, new Error('Contact not found'), 404);
         }
-        console.log(contact)
 
         if (contact.isSpam) {
             return errorResponse(res, new Error('Number already marked as spam'), 400);

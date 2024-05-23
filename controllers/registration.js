@@ -28,7 +28,7 @@ const register = async (req, res) => {
         });
 
         // Return the newly created user
-        return successResponse(res, newUser, 'User registered successfully', 201);
+        return successResponse(res, newUser.name, 'User registered successfully', 201);
     } catch (error) {
         return errorResponse(res, error);
     }
