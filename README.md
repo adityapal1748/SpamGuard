@@ -1,4 +1,4 @@
-SpamGuard
+
 SpamGuard is a web application designed to help users identify and manage spam contacts efficiently. With SpamGuard, users can search for contacts by name or phone number, mark contacts as spam, and view detailed information about each contact.
 
 Features
