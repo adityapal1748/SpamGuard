@@ -16,10 +16,10 @@ const registerSchema = Joi.object({
 const register = async (req, res) => {
     try {
         // Validate request body
-        const { error } = registerSchema.validate(req.body);
-        if (error) {
-            return errorResponse(res, new Error(error.details[0].message), 400);
-        }
+        // const { error } = registerSchema.validate(req.body);
+        // if (error) {
+        //     return errorResponse(res, new Error(error.details[0].message), 400);
+        // }
 
         const { name, phoneNumber, password, email } = req.body;
 

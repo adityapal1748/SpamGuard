@@ -4,6 +4,7 @@ const sequelize = require("./models");
 const authRoutes = require("./routes/authRoutes");
 const spamRoutes = require("./routes/spamRoutes");
 const searchRoutes = require('./routes/searchRoutes');
+const config = require("./config/config.json")
 
 const app = express();
 
@@ -22,7 +23,7 @@ sequelize.authenticate()
     .then(() => {
         console.log("Database connected");
         app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
+            console.log(`Server is running on port ${PORT} ${process.env.NODE_ENV}`);
         });
     })
     .catch(error => {
