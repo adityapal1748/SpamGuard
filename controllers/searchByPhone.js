@@ -23,18 +23,34 @@ const searchByPhone = async (req, res) => {
 
         const { phoneNumber } = value;
 
+        // Extract the user ID from the authenticated user (assuming req.user is set by the authentication middleware)
+        const userId = req.user.id;
+
         const registeredUser = await User.findOne({ where: { phoneNumber } });
 
         if (registeredUser) {
-            // If registered user is found, return only that user's details
-            return successResponse(res, {
-                name: registeredUser.name,
-                phoneNumber: registeredUser.phoneNumber,
-                email: registeredUser.email,
-                isSpam: false  // Registered users are not marked as spam by default
-            });
+            // Check if the searching user is in the contact list of the registered user
+            const contact = await Contact.findOne({ where: { userId: registeredUser.id, phoneNumber: req.user.phoneNumber } });
+
+            if (contact) {
+                // If the searching user is in the contact list of the registered user, return the email as well
+                return successResponse(res, {
+                    name: registeredUser.name,
+                    phoneNumber: registeredUser.phoneNumber,
+                    email: registeredUser.email,
+                    isSpam: false  // Registered users are not marked as spam by default
+                });
+            } else {
+                // If the searching user is not in the contact list, return details without email
+                return successResponse(res, {
+                    name: registeredUser.name,
+                    phoneNumber: registeredUser.phoneNumber,
+                    isSpam: false  // Registered users are not marked as spam by default
+                });
+            }
         }
 
+        // If no registered user is found, return contacts from the Contact table
         const results = await Contact.findAll({
             where: { phoneNumber }
         });

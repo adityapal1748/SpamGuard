@@ -31,7 +31,7 @@ const searchByName = async (req, res) => {
                     [Op.startsWith]: name
                 }
             },
-            attributes: ['name', 'phoneNumber', 'isSpam']
+            attributes: ['id', 'name', 'phoneNumber', 'isSpam']
         });
 
         // Then, search for contacts whose names contain the search query but do not start with it
@@ -42,7 +42,7 @@ const searchByName = async (req, res) => {
                     [Op.notLike]: `${name}%`
                 }
             },
-            attributes: ['name', 'phoneNumber', 'isSpam']
+            attributes: ['id', 'name', 'phoneNumber', 'isSpam']
         });
 
         const results = [...startingWithResults, ...containingResults];
