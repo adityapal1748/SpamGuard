@@ -1,11 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const config = require("../config/config.json");
 const Joi = require('joi');
-
-const env = process.env.NODE_ENV || 'development';
-const envConfig = config[env];
+require('dotenv').config();  // Load environment variables from .env file
 
 const successResponse = require('../services/httpResponseHandler');
 const errorResponse = require('../services/httpErrorHandler');
@@ -39,10 +36,10 @@ const login = async (req, res) => {
         }
 
         // Generate JWT token
-        const token = jwt.sign({ id: user.id, phoneNumber }, envConfig.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id, phoneNumber }, process.env.JWT_SECRET, { expiresIn: '1h' });
         
         // Return token
-        return successResponse(res, token);
+        return successResponse(res, { token });
     } catch (error) {
         return errorResponse(res, error);
     }

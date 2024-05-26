@@ -4,7 +4,7 @@ const sequelize = require("./models");
 const authRoutes = require("./routes/authRoutes");
 const spamRoutes = require("./routes/spamRoutes");
 const searchRoutes = require('./routes/searchRoutes');
-const config = require("./config/config.json")
+require('dotenv').config();
 
 const app = express();
 

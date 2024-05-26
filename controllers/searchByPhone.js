@@ -2,6 +2,7 @@ const Joi = require('joi');
 const Contact = require('../models/contact');
 const successResponse = require('../services/httpResponseHandler');
 const errorResponse = require('../services/httpErrorHandler');
+const User = require('../models/user');
 
 // Define Joi schema for the request body
 const schema = Joi.object({
@@ -21,6 +22,19 @@ const searchByPhone = async (req, res) => {
         }
 
         const { phoneNumber } = value;
+
+        const registeredUser = await User.findOne({ where: { phoneNumber } });
+
+        if (registeredUser) {
+            // If registered user is found, return only that user's details
+            return successResponse(res, {
+                name: registeredUser.name,
+                phoneNumber: registeredUser.phoneNumber,
+                email: registeredUser.email,
+                isSpam: false  // Registered users are not marked as spam by default
+            });
+        }
+
         const results = await Contact.findAll({
             where: { phoneNumber }
         });

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-const config = require('../config/config.json');
 const User = require('../models/user');
 const errorResponse = require('../services/httpErrorHandler');
+require('dotenv').config();  // Load environment variables from .env file
 
 const authenticate = async (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -10,7 +10,7 @@ const authenticate = async (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, config.development.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findByPk(decoded.id);
         if (!user) {
             return errorResponse(res, new Error('Invalid token.'), 401);

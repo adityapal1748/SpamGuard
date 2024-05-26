@@ -14,12 +14,14 @@ const registerSchema = Joi.object({
 });
 
 const register = async (req, res) => {
+    
     try {
         // Validate request body
-        // const { error } = registerSchema.validate(req.body);
-        // if (error) {
-        //     return errorResponse(res, new Error(error.details[0].message), 400);
-        // }
+        const { error } = registerSchema.validate(req.body);
+        
+        if (error) {
+            return errorResponse(res, new Error(error.details[0].message), 400);
+        }
 
         const { name, phoneNumber, password, email } = req.body;
 
@@ -41,8 +43,16 @@ const register = async (req, res) => {
         });
 
         // Return the newly created user's name
-        return successResponse(res, newUser.name, 'User registered successfully', 201);
+        const data = {
+            name,
+            phoneNumber,
+            email
+        }
+        return successResponse(res, data, 'User registered successfully', 201);
     } catch (error) {
+        if (error.name === 'SequelizeUniqueConstraintError') {
+            return errorResponse(res, new Error('Email already registered'), 400);
+        }
         return errorResponse(res, error);
     }
 };

@@ -1,6 +1,5 @@
 const Joi = require('joi');
 const { Op } = require('sequelize');
-const User = require('../models/user');
 const Contact = require('../models/contact');
 const successResponse = require('../services/httpResponseHandler');
 const errorResponse = require('../services/httpErrorHandler');
@@ -12,7 +11,7 @@ const schema = Joi.object({
         'string.empty': 'Name cannot be empty',
         'string.min': 'Name must be at least 1 character long',
         'any.required': 'Name is required'
-    })
+    }).trim()
 });
 
 const searchByName = async (req, res) => {
