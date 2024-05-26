@@ -1,16 +1,14 @@
+require('dotenv').config(); 
 const { Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
 const { faker } = require('@faker-js/faker');
 const User = require('../models/user');
 const Contact = require('../models/contact');
-const config = require('../config/config.json');
 
-const env = process.env.NODE_ENV || 'development';
-const envConfig = config[env];
-
-const sequelize = new Sequelize(envConfig.database, envConfig.username, envConfig.password, {
-    host: envConfig.host,
-    dialect: envConfig.dialect,
+// Use environment variables instead of config.json
+const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
 });
 
 const NUM_USERS = 10;
@@ -28,7 +26,7 @@ const createSampleUsers = async () => {
         const hashedPassword = await hashPassword('password123');
         users.push({
             name: faker.person.firstName(),
-            phoneNumber: Math.floor(Math.random() * 10000000000), // Generate Indian phone numbers
+            phoneNumber: faker.phone.number('##########'), // Generate Indian phone numbers
             email: faker.internet.email(),
             password: hashedPassword,
         });
@@ -45,7 +43,7 @@ const createSampleContacts = async () => {
         const user = users[Math.floor(Math.random() * users.length)];
         contacts.push({
             name: faker.person.fullName(),
-            phoneNumber:Math.floor(Math.random() * 10000000000) , // Generate Indian phone numbers
+            phoneNumber: faker.phone.number('##########'), // Generate Indian phone numbers
             isSpam: faker.datatype.boolean(),
             userId: user.id,  // assuming `userId` is the foreign key in Contact model
         });

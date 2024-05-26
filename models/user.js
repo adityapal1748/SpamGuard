@@ -22,7 +22,7 @@ const User = sequelize.define('User', {
     allowNull: false,
   },
 }, {
-  timestamps: true,
+  timestamps: false,
 });
 
 User.hasMany(Contact, { as: 'contacts', foreignKey: 'userId' });

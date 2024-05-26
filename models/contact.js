@@ -24,8 +24,12 @@ const Contact = sequelize.define('Contact', {
     },
     onDelete: 'CASCADE',
   },
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
 }, {
-  timestamps: true,
+  timestamps: false,
 });
 
 // Contact.belongsTo(User,{as:'name',foreignKey:'userId'})
